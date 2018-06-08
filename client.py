@@ -14,13 +14,17 @@ def do_encrypt(message):
     ciphertext = obj.encrypt(message)
     return(ciphertext)
 
+def send_message(clientsocket, message):
+    conn_status = do_encrypt(conn_status)
+    clientsocket.send(message)
+
 def connect_to_server(server, port):
     global clientsocket
     clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     clientsocket.connect((server, int(port)))
     conn_status = 'conn established'
-    conn_status = do_encrypt(conn_status)
-    return(conn_status)
+    send_message(clientsocket, conn_status)
+    return(clientsocket)
 
 def check_os():
     if sys.platform == "linux" or sys.platform == "linux2":
@@ -33,13 +37,9 @@ def check_os():
         current_os = 'other'
     return(current_os)
 
-def send_message(clientsocket, message):
-    clientsocket.send(message)
-
 
 def main(server, port):
-    connection_status = connect_to_server(server, port)
-    send_message(clientsocket, connection_status)
+    clientsocket = connect_to_server(server, port)
     operating_system = check_os()
 
 
