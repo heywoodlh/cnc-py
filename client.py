@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import sys
 import socket
 from Crypto.Cipher import AES
 
@@ -21,6 +22,17 @@ def connect_to_server(server, port):
     conn_status = do_encrypt(conn_status)
     return(conn_status)
 
+def check_os():
+    if sys.platform == "linux" or sys.platform == "linux2":
+        current_os = 'linux'
+    elif sys.platform == "darwin":
+        current_os = 'macOS'
+    elif sys.platform == "win32":
+        current_os = 'windows'
+    else:
+        current_os = 'other'
+    return(current_os)
+
 def send_message(clientsocket, message):
     clientsocket.send(message)
 
@@ -28,6 +40,7 @@ def send_message(clientsocket, message):
 def main(server, port):
     connection_status = connect_to_server(server, port)
     send_message(clientsocket, connection_status)
+    operating_system = check_os()
 
 
 if __name__ == '__main__':
