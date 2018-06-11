@@ -1,11 +1,16 @@
+altgraph==0.15
 asn1crypto==0.24.0
 certifi==2018.4.16
 cffi==1.11.5
 chardet==3.0.4
+future==0.16.0
 idna==2.6
+macholib==1.9
 Naked==0.1.31
+pefile==2017.11.5
 pycparser==2.18
 pycrypto==2.6.1
+PyInstaller==3.3.1
 PyYAML==3.12
 requests==2.18.4
 shellescape==3.4.1

