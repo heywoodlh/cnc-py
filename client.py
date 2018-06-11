@@ -15,15 +15,15 @@ def do_encrypt(message):
     return(ciphertext)
 
 def send_message(clientsocket, message):
-    conn_status = do_encrypt(conn_status)
-    clientsocket.send(message)
+    conn_status = do_encrypt(message)
+    clientsocket.send(conn_status)
 
 def connect_to_server(server, port):
     global clientsocket
     clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     clientsocket.connect((server, int(port)))
-    conn_status = 'conn established'
-    send_message(clientsocket, conn_status)
+    connection_status = 'conn established'
+    send_message(clientsocket, connection_status)
     return(clientsocket)
 
 def check_os():
